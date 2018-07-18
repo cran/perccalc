@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jorge Cimentada" />
 
-<meta name="date" content="2018-03-30" />
+<meta name="date" content="2018-07-18" />
 
 <title>Calculating percentile differences from ordered categorical and continuous variables</title>
 
@@ -20,46 +20,256 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 </head>
 
@@ -70,35 +280,35 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Calculating percentile differences from ordered categorical and continuous variables</h1>
 <h4 class="author"><em>Jorge Cimentada</em></h4>
-<h4 class="date"><em>2018-03-30</em></h4>
+<h4 class="date"><em>2018-07-18</em></h4>
 
 
 
 <p>Reardon (2011) introduced a very interesting concept in which he calculates percentile differences from ordered categorical variables. He explains his procedure very much in detail in the appendix of the book chapter but no formal implementation has been yet available on the web. With this package I introduce a function that applies the procedure, following a step-by-step Stata script that Sean Reardon kindly sent me.</p>
 <p>In this vignette I show you how to use the function and match the results to the Stata code provided by Reardon himself.</p>
 <p>We’ll be using a real world data set, the General Social Survey, that surveys American citizens on attitudes, behaviors and attributes. For this example we’ll need the packages below.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
-<span class="kw">library</span>(ggplot2)
-<span class="kw">library</span>(haven)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(haven)</a></code></pre></div>
 <p>Let’s prepare the data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp_file &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.zip&quot;</span>)
-<span class="kw">download.file</span>(<span class="st">&quot;http://gss.norc.org/Documents/stata/2016_stata.zip&quot;</span>, temp_file)
-<span class="kw">unzip</span>(temp_file, <span class="dt">exdir =</span> <span class="kw">tempdir</span>())
-
-data_link &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">tempdir</span>(), <span class="dt">full.names =</span> <span class="ot">TRUE</span>, <span class="dt">pattern =</span> <span class="st">&quot;*.DTA&quot;</span>)
-
-gss &lt;-
-<span class="st">  </span><span class="kw">read_dta</span>(data_link) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(rincome, prestg10, wtss) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">rename</span>(
-    <span class="dt">income =</span> rincome,
-    <span class="dt">prestige =</span> prestg10,
-    <span class="dt">wt =</span> wtss
-  )
-
-<span class="kw">unlink</span>(<span class="kw">c</span>(temp_file, data_link)) <span class="co"># deleting both files.</span>
-
-gss</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">temp_file &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.zip&quot;</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">download.file</span>(<span class="st">&quot;http://gss.norc.org/Documents/stata/2016_stata.zip&quot;</span>, temp_file)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">unzip</span>(temp_file, <span class="dt">exdir =</span> <span class="kw">tempdir</span>())</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">data_link &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">tempdir</span>(), <span class="dt">full.names =</span> <span class="ot">TRUE</span>, <span class="dt">pattern =</span> <span class="st">&quot;*.DTA&quot;</span>)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">gss &lt;-</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="st">  </span><span class="kw">read_dta</span>(data_link) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="st">  </span><span class="kw">select</span>(rincome, prestg10, wtss) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="st">  </span><span class="kw">rename</span>(</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">    <span class="dt">income =</span> rincome,</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">    <span class="dt">prestige =</span> prestg10,</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">    <span class="dt">wt =</span> wtss</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">  )</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="kw">unlink</span>(<span class="kw">c</span>(temp_file, data_link)) <span class="co"># deleting both files.</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">gss</a></code></pre></div>
 <pre><code>## # A tibble: 2,867 x 3
 ##    income    prestige  wt               
 ##    &lt;dbl+lbl&gt; &lt;dbl+lbl&gt; &lt;dbl+lbl&gt;        
@@ -115,148 +325,152 @@ gss</code></pre></div>
 ## # ... with 2,857 more rows</code></pre>
 <p>This is the minimum dataset that the function will accept. This means that it needs to have at least one categorical variable (<code>rincome</code>) and a continuous variable (<code>prestg10</code>) (the vector of weights is optional). The first variable is the typical income variable but asked in income brackets rather than in a continuous fashion. The second one measures the prestige of the respondents occupation.</p>
 <p>The package is called <code>perccalc</code>, short for percentile calculator and we can install and load it with this code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;cimentadaj/perccalc&quot;</span>)
-<span class="kw">library</span>(perccalc)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;cimentadaj/perccalc&quot;</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">library</span>(perccalc)</a></code></pre></div>
 <p>The package only has two functions called <code>perc_diff</code> and <code>perc_dist</code>. They’re very easy to use, we just specify the data, the name of the categorical and continuous variable and the percentile difference we want.</p>
 <p>Let’s put it to use!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">perc_diff</span>(gss, income, prestige, <span class="dt">percentiles =</span> <span class="kw">c</span>(<span class="dv">90</span>, <span class="dv">10</span>))</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">perc_diff</span>(gss, income, prestige, <span class="dt">percentiles =</span> <span class="kw">c</span>(<span class="dv">90</span>, <span class="dv">10</span>))</a></code></pre></div>
 <pre><code>## Error: is_ordered_fct is not TRUE</code></pre>
 <p>I generated that error on purpose to raise a very important requirement of the function: the categorical variable needs to be an ordered factor. This is very important because otherwise we could be calculating percentile differences from categorical variables which have no apparent order such as married, single and widowed.</p>
 <p>We can turn the previous into an ordered factor with the code below.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gss &lt;-
-<span class="st">  </span>gss <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">income =</span> <span class="kw">factor</span>(income,
-                        <span class="dt">ordered =</span> <span class="ot">TRUE</span>))</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">gss &lt;-</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span>gss <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">income =</span> <span class="kw">factor</span>(income,</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">                        <span class="dt">ordered =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
 <p>Now it’ll work.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">perc_diff</span>(gss, income, prestige, <span class="dt">percentiles =</span> <span class="kw">c</span>(<span class="dv">90</span>, <span class="dv">10</span>))</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">perc_diff</span>(gss, income, prestige, <span class="dt">percentiles =</span> <span class="kw">c</span>(<span class="dv">90</span>, <span class="dv">10</span>))</a></code></pre></div>
 <pre><code>## difference         se 
 ##  13.774772   1.022807</code></pre>
 <p>We can play around with other percentiles</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">perc_diff</span>(gss, income, prestige, <span class="dt">percentiles =</span> <span class="kw">c</span>(<span class="dv">50</span>, <span class="dv">10</span>))</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">perc_diff</span>(gss, income, prestige, <span class="dt">percentiles =</span> <span class="kw">c</span>(<span class="dv">50</span>, <span class="dv">10</span>))</a></code></pre></div>
 <pre><code>## difference         se 
 ##   2.351532   2.358102</code></pre>
 <p>And we can add a vector of weights</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">perc_diff</span>(gss, income, prestige, <span class="dt">weights =</span> wt)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">perc_diff</span>(gss, income, prestige, <span class="dt">weights =</span> wt)</a></code></pre></div>
 <pre><code>## difference         se 
 ## 15.2556667  0.9686197</code></pre>
 <p>Now, how are we sure that these estimates are as accurate as the Reardon (2011) implementation? We can compare the Stata output using this data set.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Saving the dataset to a path</span>
-gss <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">write_dta</span>(<span class="dt">path =</span> <span class="st">&quot;/Users/cimentadaj/Downloads/gss_income.dta&quot;</span>, <span class="dt">version =</span> <span class="dv">13</span>)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># Saving the dataset to a path</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">gss <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw">write_dta</span>(<span class="dt">path =</span> <span class="st">&quot;/Users/cimentadaj/Downloads/gss_income.dta&quot;</span>, <span class="dt">version =</span> <span class="dv">13</span>)</a></code></pre></div>
 <p>Running the code below using the <code>gss_income.dta</code>..</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">*--------</span>
-use <span class="st">&quot;/Users/cimentadaj/Downloads/gss_income.dta&quot;</span>, clear
-
-drop <span class="cf">if</span> <span class="kw">missing</span>(income)
-drop <span class="cf">if</span> <span class="kw">missing</span>(prestige)
-
-tab income, <span class="kw">gen</span>(inc)
-<span class="op">*--------</span>
-
-<span class="er">/*</span><span class="op">-----------------------</span>
-<span class="st">    </span>Making a data set that has 
-    one observation per income category
-    and has mean and <span class="kw">se</span>(mean) <span class="cf">in</span> each category
-    and percent of population <span class="cf">in</span> the category
-<span class="op">------------------------</span><span class="er">*/</span>
-
-tempname memhold
-tempfile results
-postfile <span class="st">`</span><span class="dt">memhold' income mean se_mean per using </span><span class="st">`</span>results<span class="st">'</span>
-
-<span class="st">forv i = 1/12 {</span>
-<span class="st">    sum inc`i'</span> [aw=wt]
-    loc per<span class="st">`</span><span class="dt">i' = r(mean)</span>
-<span class="dt">                                    </span>
-<span class="dt">    qui sum prestige if inc</span><span class="st">`</span>i<span class="st">'==1 </span>
-<span class="st">                            </span>
-<span class="st">    if `r(N)'</span><span class="op">&gt;</span><span class="dv">0</span> {
-        qui regress prestige <span class="cf">if</span> inc<span class="st">`</span><span class="dt">i'==1 [aw=wt]</span>
-<span class="dt">        post </span><span class="st">`</span>memhold<span class="st">' (`i'</span><span class="er">)</span> (_b[_cons]) (_se[_cons]) (<span class="st">`</span><span class="dt">per</span><span class="st">`</span>i<span class="st">''</span>)
-                            
-    }               
-<span class="er">}</span>
-postclose <span class="st">`</span><span class="dt">memhold' </span>
-
-<span class="dt">/*-----------------------</span>
-<span class="dt">    Making income categories</span>
-<span class="dt">    into percentiles</span>
-<span class="dt">------------------------*/</span>
-
-
-<span class="dt">    use </span><span class="st">`</span>results<span class="st">', clear</span>
-
-<span class="st">    sort income</span>
-<span class="st">    gen cathi = sum(per)</span>
-<span class="st">    gen catlo = cathi[_n-1]</span>
-<span class="st">    replace catlo = 0 if income==1</span>
-<span class="st">    gen catmid = (catlo+cathi)/2</span>
-<span class="st">    </span>
-<span class="st">    /*-----------------------</span>
-<span class="st">        Calculate income </span>
-<span class="st">        achievement gaps</span>
-<span class="st">    ------------------------*/</span>
-
-<span class="st">    sort income</span>
-<span class="st">    </span>
-<span class="st">    g x1 = catmid</span>
-<span class="st">    g x2 = catmid^2 + ((cathi-catlo)^2)/12</span>
-<span class="st">    g x3 = catmid^3 + ((cathi-catlo)^2)/4</span>
-
-<span class="st">    g cimnhi = mean + 1.96*se_mean</span>
-<span class="st">    g cimnlo = mean - 1.96*se_mean</span>
-
-<span class="st">    reg mean x1 x2 x3 [aw=1/se_mean^2] </span>
-
-<span class="st">    twoway (rcap cimnhi cimnlo catmid) (scatter mean catmid) ///</span>
-<span class="st">        (function y = _b[_cons] + _b[x1]*x + _b[x2]*x^2 + _b[x3]*x^3, ran(0 1)) </span>
-<span class="st">    </span>
-<span class="st">    loc hi_p = 90</span>
-<span class="st">    loc lo_p = 10</span>
-
-<span class="st">    loc d1 = [`hi_p'</span> <span class="op">-</span><span class="st"> `</span><span class="dt">lo_p']/100</span>
-<span class="dt">    loc d2 = [(</span><span class="st">`</span>hi_p<span class="st">')^2 - (`lo_p'</span><span class="er">)</span><span class="op">^</span><span class="dv">2</span>]<span class="op">/</span>(<span class="dv">100</span><span class="op">^</span><span class="dv">2</span>)
-    loc d3 =<span class="st"> </span>[(<span class="st">`</span><span class="dt">hi_p')^3 - (</span><span class="st">`</span>lo_p<span class="st">')^3]/(100^3)</span>
-
-<span class="st">    lincom `d1'</span><span class="op">*</span>x1 <span class="op">+</span><span class="st"> `</span><span class="dt">d2'*x2 + </span><span class="st">`</span>d3<span class="st">'*x3</span>
-<span class="st">    loc diff`hi_p'`</span><span class="dt">lo_p' = r(estimate)</span>
-<span class="dt">    loc se</span><span class="st">`</span>hi_p<span class="st">'`lo_p'</span> =<span class="st"> </span><span class="kw">r</span>(se)
-    
-    di <span class="st">&quot;`hi_p'-`lo_p' gap:     `diff`hi_p'`lo_p''&quot;</span>
-    di <span class="st">&quot;se(`hi_p'-`lo_p' gap): `se`hi_p'`lo_p''&quot;</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="op">*--------</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">use <span class="st">&quot;/Users/cimentadaj/Downloads/gss_income.dta&quot;</span>, clear</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">drop <span class="cf">if</span> <span class="kw">missing</span>(income)</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">drop <span class="cf">if</span> <span class="kw">missing</span>(prestige)</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">tab income, <span class="kw">gen</span>(inc)</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="op">*--------</span></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="er">/*</span><span class="op">-----------------------</span></a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="st">    </span>Making a data set that has </a>
+<a class="sourceLine" id="cb15-12" data-line-number="12">    one observation per income category</a>
+<a class="sourceLine" id="cb15-13" data-line-number="13">    and has mean and <span class="kw">se</span>(mean) <span class="cf">in</span> each category</a>
+<a class="sourceLine" id="cb15-14" data-line-number="14">    and percent of population <span class="cf">in</span> the category</a>
+<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="op">------------------------</span><span class="er">*/</span></a>
+<a class="sourceLine" id="cb15-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb15-17" data-line-number="17">tempname memhold</a>
+<a class="sourceLine" id="cb15-18" data-line-number="18">tempfile results</a>
+<a class="sourceLine" id="cb15-19" data-line-number="19">postfile <span class="st">`</span><span class="dt">memhold' income mean se_mean per using </span><span class="st">`</span>results<span class="st">'</span></a>
+<a class="sourceLine" id="cb15-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb15-21" data-line-number="21"><span class="st">forv i = 1/12 {</span></a>
+<a class="sourceLine" id="cb15-22" data-line-number="22"><span class="st">    sum inc`i'</span> [aw=wt]</a>
+<a class="sourceLine" id="cb15-23" data-line-number="23">    loc per<span class="st">`</span><span class="dt">i' = r(mean)</span></a>
+<a class="sourceLine" id="cb15-24" data-line-number="24"><span class="dt">                                    </span></a>
+<a class="sourceLine" id="cb15-25" data-line-number="25"><span class="dt">    qui sum prestige if inc</span><span class="st">`</span>i<span class="st">'==1 </span></a>
+<a class="sourceLine" id="cb15-26" data-line-number="26"><span class="st">                            </span></a>
+<a class="sourceLine" id="cb15-27" data-line-number="27"><span class="st">    if `r(N)'</span><span class="op">&gt;</span><span class="dv">0</span> {</a>
+<a class="sourceLine" id="cb15-28" data-line-number="28">        qui regress prestige <span class="cf">if</span> inc<span class="st">`</span><span class="dt">i'==1 [aw=wt]</span></a>
+<a class="sourceLine" id="cb15-29" data-line-number="29"><span class="dt">        post </span><span class="st">`</span>memhold<span class="st">' (`i'</span><span class="er">)</span> (_b[_cons]) (_se[_cons]) (<span class="st">`</span><span class="dt">per</span><span class="st">`</span>i<span class="st">''</span>)</a>
+<a class="sourceLine" id="cb15-30" data-line-number="30">                            </a>
+<a class="sourceLine" id="cb15-31" data-line-number="31">    }               </a>
+<a class="sourceLine" id="cb15-32" data-line-number="32"><span class="er">}</span></a>
+<a class="sourceLine" id="cb15-33" data-line-number="33">postclose <span class="st">`</span><span class="dt">memhold' </span></a>
+<a class="sourceLine" id="cb15-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb15-35" data-line-number="35"><span class="dt">/*-----------------------</span></a>
+<a class="sourceLine" id="cb15-36" data-line-number="36"><span class="dt">    Making income categories</span></a>
+<a class="sourceLine" id="cb15-37" data-line-number="37"><span class="dt">    into percentiles</span></a>
+<a class="sourceLine" id="cb15-38" data-line-number="38"><span class="dt">------------------------*/</span></a>
+<a class="sourceLine" id="cb15-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb15-40" data-line-number="40"></a>
+<a class="sourceLine" id="cb15-41" data-line-number="41"><span class="dt">    use </span><span class="st">`</span>results<span class="st">', clear</span></a>
+<a class="sourceLine" id="cb15-42" data-line-number="42"></a>
+<a class="sourceLine" id="cb15-43" data-line-number="43"><span class="st">    sort income</span></a>
+<a class="sourceLine" id="cb15-44" data-line-number="44"><span class="st">    gen cathi = sum(per)</span></a>
+<a class="sourceLine" id="cb15-45" data-line-number="45"><span class="st">    gen catlo = cathi[_n-1]</span></a>
+<a class="sourceLine" id="cb15-46" data-line-number="46"><span class="st">    replace catlo = 0 if income==1</span></a>
+<a class="sourceLine" id="cb15-47" data-line-number="47"><span class="st">    gen catmid = (catlo+cathi)/2</span></a>
+<a class="sourceLine" id="cb15-48" data-line-number="48"><span class="st">    </span></a>
+<a class="sourceLine" id="cb15-49" data-line-number="49"><span class="st">    /*-----------------------</span></a>
+<a class="sourceLine" id="cb15-50" data-line-number="50"><span class="st">        Calculate income </span></a>
+<a class="sourceLine" id="cb15-51" data-line-number="51"><span class="st">        achievement gaps</span></a>
+<a class="sourceLine" id="cb15-52" data-line-number="52"><span class="st">    ------------------------*/</span></a>
+<a class="sourceLine" id="cb15-53" data-line-number="53"></a>
+<a class="sourceLine" id="cb15-54" data-line-number="54"><span class="st">    sort income</span></a>
+<a class="sourceLine" id="cb15-55" data-line-number="55"><span class="st">    </span></a>
+<a class="sourceLine" id="cb15-56" data-line-number="56"><span class="st">    g x1 = catmid</span></a>
+<a class="sourceLine" id="cb15-57" data-line-number="57"><span class="st">    g x2 = catmid^2 + ((cathi-catlo)^2)/12</span></a>
+<a class="sourceLine" id="cb15-58" data-line-number="58"><span class="st">    g x3 = catmid^3 + ((cathi-catlo)^2)/4</span></a>
+<a class="sourceLine" id="cb15-59" data-line-number="59"></a>
+<a class="sourceLine" id="cb15-60" data-line-number="60"><span class="st">    g cimnhi = mean + 1.96*se_mean</span></a>
+<a class="sourceLine" id="cb15-61" data-line-number="61"><span class="st">    g cimnlo = mean - 1.96*se_mean</span></a>
+<a class="sourceLine" id="cb15-62" data-line-number="62"></a>
+<a class="sourceLine" id="cb15-63" data-line-number="63"><span class="st">    reg mean x1 x2 x3 [aw=1/se_mean^2] </span></a>
+<a class="sourceLine" id="cb15-64" data-line-number="64"></a>
+<a class="sourceLine" id="cb15-65" data-line-number="65"><span class="st">    twoway (rcap cimnhi cimnlo catmid) (scatter mean catmid) ///</span></a>
+<a class="sourceLine" id="cb15-66" data-line-number="66"><span class="st">        (function y = _b[_cons] + _b[x1]*x + _b[x2]*x^2 + _b[x3]*x^3, ran(0 1)) </span></a>
+<a class="sourceLine" id="cb15-67" data-line-number="67"><span class="st">    </span></a>
+<a class="sourceLine" id="cb15-68" data-line-number="68"><span class="st">    loc hi_p = 90</span></a>
+<a class="sourceLine" id="cb15-69" data-line-number="69"><span class="st">    loc lo_p = 10</span></a>
+<a class="sourceLine" id="cb15-70" data-line-number="70"></a>
+<a class="sourceLine" id="cb15-71" data-line-number="71"><span class="st">    loc d1 = [`hi_p'</span> <span class="op">-</span><span class="st"> `</span><span class="dt">lo_p']/100</span></a>
+<a class="sourceLine" id="cb15-72" data-line-number="72"><span class="dt">    loc d2 = [(</span><span class="st">`</span>hi_p<span class="st">')^2 - (`lo_p'</span><span class="er">)</span><span class="op">^</span><span class="dv">2</span>]<span class="op">/</span>(<span class="dv">100</span><span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb15-73" data-line-number="73">    loc d3 =<span class="st"> </span>[(<span class="st">`</span><span class="dt">hi_p')^3 - (</span><span class="st">`</span>lo_p<span class="st">')^3]/(100^3)</span></a>
+<a class="sourceLine" id="cb15-74" data-line-number="74"></a>
+<a class="sourceLine" id="cb15-75" data-line-number="75"><span class="st">    lincom `d1'</span><span class="op">*</span>x1 <span class="op">+</span><span class="st"> `</span><span class="dt">d2'*x2 + </span><span class="st">`</span>d3<span class="st">'*x3</span></a>
+<a class="sourceLine" id="cb15-76" data-line-number="76"><span class="st">    loc diff`hi_p'`</span><span class="dt">lo_p' = r(estimate)</span></a>
+<a class="sourceLine" id="cb15-77" data-line-number="77"><span class="dt">    loc se</span><span class="st">`</span>hi_p<span class="st">'`lo_p'</span> =<span class="st"> </span><span class="kw">r</span>(se)</a>
+<a class="sourceLine" id="cb15-78" data-line-number="78">    </a>
+<a class="sourceLine" id="cb15-79" data-line-number="79">    di <span class="st">&quot;`hi_p'-`lo_p' gap:     `diff`hi_p'`lo_p''&quot;</span></a>
+<a class="sourceLine" id="cb15-80" data-line-number="80">    di <span class="st">&quot;se(`hi_p'-`lo_p' gap): `se`hi_p'`lo_p''&quot;</span></a></code></pre></div>
 <p>I get that the 90/10 difference is <code>15.25</code> with a standard error of <code>.972</code>. Does it sound familiar?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">perc_diff</span>(gss, income, prestige, <span class="dt">weights =</span> wt)</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">perc_diff</span>(gss, income, prestige, <span class="dt">weights =</span> wt)</a></code></pre></div>
 <pre><code>## difference         se 
 ## 15.2556667  0.9686197</code></pre>
 <p>Finally, there’s <code>perc_dist</code> that shares a lot of similarity with <code>perc_diff</code>. It calculates the estimate for every percentile. You can use this to perform your own analysis. For example,</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">perc_dist</span>(gss, income, prestige) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">head</span>()</code></pre></div>
-<pre><code>##   percentile  estimate std.error
-## 1          1 0.1273929 0.1749636
-## 2          2 0.2483978 0.3376261
-## 3          3 0.3632609 0.4883166
-## 4          4 0.4722282 0.6273666
-## 5          5 0.5755458 0.7551097
-## 6          6 0.6734598 0.8718822</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">perc_dist</span>(gss, income, prestige) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<pre><code>## # A tibble: 6 x 3
+##   percentile estimate std.error
+##        &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1          1    0.127     0.175
+## 2          2    0.248     0.338
+## 3          3    0.363     0.488
+## 4          4    0.472     0.627
+## 5          5    0.576     0.755
+## 6          6    0.673     0.872</code></pre>
 <p>We can also add the optional set of weights and graph it in a more convenient way.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gss <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">perc_dist</span>(income, prestige, wt) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ci_low =</span> estimate <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>std.error,
-         <span class="dt">ci_hi =</span> estimate <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>std.error) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(percentile, estimate)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> ci_low, <span class="dt">ymax =</span> ci_hi))</code></pre></div>
-<p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">gss <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">  </span><span class="kw">perc_dist</span>(income, prestige, wt) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ci_low =</span> estimate <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>std.error,</a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">         <span class="dt">ci_hi =</span> estimate <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>std.error) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(percentile, estimate)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> ci_low, <span class="dt">ymax =</span> ci_hi))</a></code></pre></div>
+<p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
 <p>Please note that for calculating the difference between two percentiles it is more accurate to use the <code>perc_diff</code> function. The <code>perc_diff</code> function calculates the difference through a linear combination of coefficients.</p>
 <p>For example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">perc_dist</span>(gss, income, prestige, wt) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(percentile <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">90</span>, <span class="dv">10</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">diff =</span> <span class="kw">diff</span>(estimate),
-            <span class="dt">se_diff =</span> <span class="kw">diff</span>(std.error))</code></pre></div>
-<pre><code>##       diff     se_diff
-## 1 15.25567 0.009851745</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">perc_dist</span>(gss, income, prestige, wt) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(percentile <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">90</span>, <span class="dv">10</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">diff =</span> <span class="kw">diff</span>(estimate),</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">            <span class="dt">se_diff =</span> <span class="kw">diff</span>(std.error))</a></code></pre></div>
+<pre><code>## # A tibble: 1 x 2
+##    diff se_diff
+##   &lt;dbl&gt;   &lt;dbl&gt;
+## 1  15.3 0.00985</code></pre>
 <p>compared to</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">perc_diff</span>(gss, income, prestige, <span class="dt">weights =</span> wt, <span class="dt">percentiles =</span> <span class="kw">c</span>(<span class="dv">90</span>, <span class="dv">10</span>))</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">perc_diff</span>(gss, income, prestige, <span class="dt">weights =</span> wt, <span class="dt">percentiles =</span> <span class="kw">c</span>(<span class="dv">90</span>, <span class="dv">10</span>))</a></code></pre></div>
 <pre><code>## difference         se 
 ## 15.2556667  0.9686197</code></pre>
 <p>Note how the coefficients are the same but the standard error is different.</p>
