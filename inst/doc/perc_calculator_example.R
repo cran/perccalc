@@ -1,25 +1,18 @@
 ## ---- message = FALSE, warning = FALSE-----------------------------------
 library(dplyr)
 library(ggplot2)
-library(haven)
+library(carData)
 
 ## ---- message = FALSE, warning = FALSE-----------------------------------
-temp_file <- tempfile(fileext = ".zip")
-download.file("http://gss.norc.org/Documents/stata/2016_stata.zip", temp_file)
-unzip(temp_file, exdir = tempdir())
+set.seed(213141)
+data("GSSvocab")
 
-data_link <- list.files(tempdir(), full.names = TRUE, pattern = "*.DTA")
+gss <- 
+  as_tibble(GSSvocab) %>% 
+  filter(year == '1978') %>% 
+  mutate(weight = sample(1:3, size = nrow(.), replace = TRUE, prob = c(0.1, 0.5, 0.4))) %>% 
+  select(ageGroup, vocab, weight)
 
-gss <-
-  read_dta(data_link) %>%
-  select(rincome, prestg10, wtss) %>%
-  rename(
-    income = rincome,
-    prestige = prestg10,
-    wt = wtss
-  )
-
-unlink(c(temp_file, data_link)) # deleting both files.
 
 gss
 
@@ -31,57 +24,56 @@ gss
 library(perccalc)
 
 ## ---- error = TRUE-------------------------------------------------------
-perc_diff(gss, income, prestige, percentiles = c(90, 10))
+perc_diff(gss, ageGroup, vocab, percentiles = c(90, 10))
 
 ## ------------------------------------------------------------------------
 gss <-
   gss %>%
-  mutate(income = factor(income,
-                        ordered = TRUE))
+  mutate(ageGroup = factor(ageGroup, ordered = TRUE))
 
 ## ------------------------------------------------------------------------
-perc_diff(gss, income, prestige, percentiles = c(90, 10))
+perc_diff(gss, ageGroup, vocab, percentiles = c(90, 10))
 
 ## ------------------------------------------------------------------------
-perc_diff(gss, income, prestige, percentiles = c(50, 10))
+perc_diff(gss, ageGroup, vocab, percentiles = c(50, 10))
 
 ## ------------------------------------------------------------------------
-perc_diff(gss, income, prestige, weights = wt)
+perc_diff(gss, ageGroup, vocab, weight)
 
 ## ---- eval = FALSE-------------------------------------------------------
 #  # Saving the dataset to a path
 #  gss %>%
-#    write_dta(path = "/Users/cimentadaj/Downloads/gss_income.dta", version = 13)
+#    write_dta(path = "C:\\Users\\cimentadaj\\Downloads\\gss_data.dta", version = 13)
 
 ## ---- eval = F-----------------------------------------------------------
 #  *--------
-#  use "/Users/cimentadaj/Downloads/gss_income.dta", clear
+#  use "/Users/cimentadaj/Downloads/gss_data.dta", clear
 #  
-#  drop if missing(income)
-#  drop if missing(prestige)
+#  drop if missing(ageGroup)
+#  drop if missing(vocab)
 #  
-#  tab income, gen(inc)
+#  tab ageGroup, gen(inc)
 #  *--------
 #  
 #  /*-----------------------
 #  	Making a data set that has
-#  	one observation per income category
+#  	one observation per age group category
 #  	and has mean and se(mean) in each category
 #  	and percent of population in the category
 #  ------------------------*/
 #  
 #  tempname memhold
 #  tempfile results
-#  postfile `memhold' income mean se_mean per using `results'
+#  postfile `memhold' agegroup mean se_mean per using `results'
 #  
-#  forv i = 1/12 {
-#  	sum inc`i' [aw=wt]
+#  forv i = 1/5 {
+#  	sum inc`i' [aw=weight]
 #  	loc per`i' = r(mean)
 #  									
-#  	qui sum prestige if inc`i'==1
+#  	qui sum vocab if inc`i'==1
 #  							
 #  	if `r(N)'>0 {
-#  		qui regress prestige if inc`i'==1 [aw=wt]
+#  		qui regress vocab if inc`i'==1 [aw=weight]
 #  		post `memhold' (`i') (_b[_cons]) (_se[_cons]) (`per`i'')
 #  							
 #  	}				
@@ -89,25 +81,25 @@ perc_diff(gss, income, prestige, weights = wt)
 #  postclose `memhold'	
 #  
 #  /*-----------------------
-#  	Making income categories
+#  	Making age group categories
 #  	into percentiles
 #  ------------------------*/
 #  
 #  
 #  	use `results', clear
 #  
-#  	sort income
+#  	sort agegroup
 #  	gen cathi = sum(per)
 #  	gen catlo = cathi[_n-1]
-#  	replace catlo = 0 if income==1
+#  	replace catlo = 0 if agegroup==1
 #  	gen catmid = (catlo+cathi)/2
 #  	
 #  	/*-----------------------
-#  		Calculate income
-#  		achievement gaps
+#  		Calculate age group
+#  		vocabulary gaps
 #  	------------------------*/
 #  
-#  	sort income
+#  	sort agegroup
 #  	
 #  	g x1 = catmid
 #  	g x2 = catmid^2 + ((cathi-catlo)^2)/12
@@ -136,15 +128,15 @@ perc_diff(gss, income, prestige, weights = wt)
 #  	di "se(`hi_p'-`lo_p' gap): `se`hi_p'`lo_p''"
 
 ## ------------------------------------------------------------------------
-perc_diff(gss, income, prestige, weights = wt)
+perc_diff(gss, ageGroup, vocab, weight)
 
 ## ------------------------------------------------------------------------
-perc_dist(gss, income, prestige) %>%
+perc_dist(gss, ageGroup, vocab) %>%
   head()
 
 ## ---- fig.align = 'center', fig.width = 6, fig.height = 5----------------
 gss %>%
-  perc_dist(income, prestige, wt) %>%
+  perc_dist(ageGroup, vocab, weight) %>%
   mutate(ci_low = estimate - 1.96 * std.error,
          ci_hi = estimate + 1.96 * std.error) %>%
   ggplot(aes(percentile, estimate)) +
@@ -152,11 +144,11 @@ gss %>%
   geom_errorbar(aes(ymin = ci_low, ymax = ci_hi))
 
 ## ------------------------------------------------------------------------
-perc_dist(gss, income, prestige, wt) %>%
+perc_dist(gss, ageGroup, vocab, weight) %>%
   filter(percentile %in% c(90, 10)) %>%
   summarize(diff = diff(estimate),
             se_diff = diff(std.error))
 
 ## ------------------------------------------------------------------------
-perc_diff(gss, income, prestige, weights = wt, percentiles = c(90, 10))
+perc_diff(gss, ageGroup, vocab, weight, percentiles = c(90, 10))
 

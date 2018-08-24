@@ -3,7 +3,6 @@ library(perccalc)
 library(dplyr)
 library(ggplot2)
 
-
 ## ---- message = FALSE, warning = FALSE-----------------------------------
 
 smoking_data <-
