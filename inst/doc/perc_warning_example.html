@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <meta name="author" content="Jorge Cimentada" />
 
-<meta name="date" content="2018-08-24" />
+<meta name="date" content="2019-12-09" />
 
 <title>Warning message with perccalc package</title>
 
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -32,16 +32,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -50,9 +50,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -83,7 +83,29 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -271,6 +293,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -279,26 +304,26 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Warning message with perccalc package</h1>
-<h4 class="author"><em>Jorge Cimentada</em></h4>
-<h4 class="date"><em>2018-08-24</em></h4>
+<h4 class="author">Jorge Cimentada</h4>
+<h4 class="date">2019-12-09</h4>
 
 
 
 <p>While the other vignette shows you how to use <code>perccalc</code> appropriately, there are instances where there’s just too few categories to estimate percentiles properly. Imagine estimating a distribution of <code>1:100</code> percentiles with only three ordered categories, it just sounds too far fetched.</p>
 <p>Let’s load our packages.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(perccalc)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(ggplot2)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(perccalc)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(ggplot2)</span></code></pre></div>
 <p>For example, take the <code>survey</code> data on smoking habits.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">smoking_data &lt;-</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span>MASS<span class="op">::</span>survey <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># you will need to install the MASS package</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw">select</span>(Sex, Smoke, Pulse) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">  </span><span class="kw">rename</span>(</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">gender =</span> Sex,</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="dt">smoke =</span> Smoke,</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">    <span class="dt">pulse_rate =</span> Pulse</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">  )</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>smoking_data &lt;-</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="st">  </span>MASS<span class="op">::</span>survey <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># you will need to install the MASS package</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="st">  </span><span class="kw">select</span>(Sex, Smoke, Pulse) <span class="op">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="st">  </span><span class="kw">rename</span>(</span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="dt">gender =</span> Sex,</span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="dt">smoke =</span> Smoke,</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="dt">pulse_rate =</span> Pulse</span>
+<span id="cb2-9"><a href="#cb2-9"></a>  )</span></code></pre></div>
 <p>The final results is this dataset:</p>
 <pre><code>## # A tibble: 237 x 3
 ##    gender smoke pulse_rate
@@ -313,38 +338,41 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##  8 Male   Never         55
 ##  9 Male   Never         56
 ## 10 Male   Never         59
-## # ... with 227 more rows</code></pre>
+## # … with 227 more rows</code></pre>
 <p>Note that there’s only four categories in the <code>smoke</code> variable. Let’s try to estimate the percentile difference.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">smoking_data &lt;-</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span>smoking_data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">smoke =</span> <span class="kw">factor</span>(smoke,</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">                        <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;Never&quot;</span>, <span class="st">&quot;Occas&quot;</span>, <span class="st">&quot;Regul&quot;</span>, <span class="st">&quot;Heavy&quot;</span>),</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">                        <span class="dt">ordered =</span> <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw">perc_diff</span>(smoking_data, smoke, pulse_rate)</a></code></pre></div>
-<pre><code>## Warning in perc_diff(smoking_data, smoke, pulse_rate): Too few categories
-## in categorical variable to estimate the variance-covariance matrix and
-## standard errors. Proceeding without estimated standard errors but perhaps
-## you should increase the numberof categories</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>smoking_data &lt;-</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="st">  </span>smoking_data <span class="op">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">smoke =</span> <span class="kw">factor</span>(smoke,</span>
+<span id="cb4-4"><a href="#cb4-4"></a>                        <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;Never&quot;</span>, <span class="st">&quot;Occas&quot;</span>, <span class="st">&quot;Regul&quot;</span>, <span class="st">&quot;Heavy&quot;</span>),</span>
+<span id="cb4-5"><a href="#cb4-5"></a>                        <span class="dt">ordered =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="kw">perc_diff</span>(smoking_data, smoke, pulse_rate)</span></code></pre></div>
+<pre><code>## Warning in perc_diff_(data_model = data_model, categorical_var =
+## categorical_var, : Too few categories in categorical variable to estimate the
+## variance-covariance matrix and standard errors. Proceeding without estimated
+## standard errors but perhaps you should increase the number of categories</code></pre>
 <pre><code>## difference         se 
-##   385.1357         NA</code></pre>
+##   390.6092         NA</code></pre>
 <p><code>perc_diff</code> returns the estimated coefficient but also warns you that it’s difficult for the function to estimate the standard error. This happens similarly for <code>perc_dist</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">perc_dist</span>(smoking_data, smoke, pulse_rate) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
-<pre><code>## Warning in perc_dist(smoking_data, smoke, pulse_rate): Too few categories
-## in categorical variable to estimate the variance-covariance matrix and
-## standard errors. Proceeding without estimated standard errors but perhaps
-## you should increase the number of categories</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">perc_dist</span>(smoking_data, smoke, pulse_rate) <span class="op">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## Warning in perc_dist(smoking_data, smoke, pulse_rate): Too few categories in
+## categorical variable to estimate the variance-covariance matrix and standard
+## errors. Proceeding without estimated standard errors but perhaps you should
+## increase the number of categories</code></pre>
 <pre><code>## # A tibble: 6 x 2
 ##   percentile estimate
 ##        &lt;int&gt;    &lt;dbl&gt;
-## 1          1     24.2
-## 2          2     47.8
-## 3          3     70.8
-## 4          4     93.1
-## 5          5    115. 
-## 6          6    136.</code></pre>
+## 1          1     24.5
+## 2          2     48.4
+## 3          3     71.7
+## 4          4     94.3
+## 5          5    116. 
+## 6          6    138.</code></pre>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

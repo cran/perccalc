@@ -1,10 +1,10 @@
 ---
-title: "Calculating percentile differences from ordered categorical and continuous variables"
+title: "Case study: percentile distributions using the General Social Survey"
 author: "Jorge Cimentada"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Calculating percentile differences from ordered categorical and continuous variables}
+  %\VignetteIndexEntry{Case study: percentile differences using the General Social Survey}
   %\VignetteEngine{knitr::rmarkdown}
   usepackage[UTF-8]{inputenc}
 ---
@@ -41,7 +41,7 @@ This is the minimum dataset that the function will accept. This means that it ne
 
 The package is called `perccalc`, short for percentile calculator and we can install and load it with this code:
 
-```{r, eval = F}
+```{r, eval = FALSE}
 devtools::install_github("cimentadaj/perccalc")
 library(perccalc)
 ```
@@ -96,7 +96,7 @@ gss %>%
 
 Running the code below using the `gss_data.dta`..
 
-```{r, eval = F}
+```{r, eval = FALSE}
 *--------
 use "/Users/cimentadaj/Downloads/gss_data.dta", clear
 

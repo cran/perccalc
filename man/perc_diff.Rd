@@ -2,18 +2,32 @@
 % Please edit documentation in R/perc_diff.R
 \name{perc_diff}
 \alias{perc_diff}
+\alias{perc_diff_df}
 \title{Calculate percentile differences from an ordered categorical variable
- and a continuous variable.}
+and a continuous variable.}
 \usage{
-perc_diff(data_model, categorical_var, continuous_var, weights = NULL,
-  percentiles = c(90, 10))
+perc_diff(
+  data_model,
+  categorical_var,
+  continuous_var,
+  weights = NULL,
+  percentiles = c(90, 10)
+)
+
+perc_diff_df(
+  data_model,
+  categorical_var,
+  continuous_var,
+  weights = NULL,
+  percentiles = c(90, 10)
+)
 }
 \arguments{
 \item{data_model}{A data frame with at least the categorical and continuous
 variables from which to estimate the percentile differences}
 
 \item{categorical_var}{The bare unquoted name of the categorical variable.
-This variable SHOULD be an ordered factor. If not, the function will stop.}
+This variable SHOULD be an ordered factor. If not, will raise an error.}
 
 \item{continuous_var}{The bare unquoted name of the continuous variable from
 which to estimate the percentiles}
@@ -25,37 +39,41 @@ If not specified, then estimation is done without weights}
 percentiles to subtract}
 }
 \value{
-A vector with the percentile difference and it's associated
- standard error
+\code{perc_diff} returns a vector with the percentile difference and
+its associated standard error. \code{perc_diff_df} returns the same but as
+a data frame.
 }
 \description{
 Calculate percentile differences from an ordered categorical variable
- and a continuous variable.
+and a continuous variable.
+}
+\details{
+\code{perc_diff} drops missing observations silently for calculating
+the linear combination of coefficients.
 }
 \examples{
 
-library(dplyr)
 
 set.seed(23131)
 N <- 1000
 K <- 20
 
-toy_data <- tibble::tibble(id = 1:N,
-score = rnorm(N, sd = 2),
-type = rep(paste0("inc", 1:20), each = N/K),
-wt = 1)
+toy_data <- data.frame(id = 1:N,
+                       score = rnorm(N, sd = 2),
+                       type = rep(paste0("inc", 1:20), each = N/K),
+                       wt = 1)
+
 
 # perc_diff(toy_data, type, score)
 # type is not an ordered factor!
 
-toy_data <-
-toy_data \%>\%
-mutate(type = factor(type, levels = unique(type), ordered = TRUE))
-
+toy_data$type <- factor(toy_data$type, levels = unique(toy_data$type), ordered = TRUE)
 
 perc_diff(toy_data, type, score, percentiles = c(90, 10))
 perc_diff(toy_data, type, score, percentiles = c(50, 10))
 
 perc_diff(toy_data, type, score, weights = wt, percentiles = c(30, 10))
+# Results as data frame
+perc_diff_df(toy_data, type, score, weights = wt, percentiles = c(30, 10))
 
 }

@@ -1,9 +1,9 @@
-## ---- warning = FALSE, message = FALSE-----------------------------------
+## ---- warning = FALSE, message = FALSE----------------------------------------
 library(perccalc)
 library(dplyr)
 library(ggplot2)
 
-## ---- message = FALSE, warning = FALSE-----------------------------------
+## ---- message = FALSE, warning = FALSE----------------------------------------
 
 smoking_data <-
   MASS::survey %>% # you will need to install the MASS package
@@ -15,11 +15,11 @@ smoking_data <-
     pulse_rate = Pulse
   )
 
-## ---- echo = FALSE-------------------------------------------------------
+## ---- echo = FALSE------------------------------------------------------------
 smoking_data %>%
   arrange(pulse_rate)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 smoking_data <-
   smoking_data %>%
   mutate(smoke = factor(smoke,
@@ -28,7 +28,7 @@ smoking_data <-
 
 perc_diff(smoking_data, smoke, pulse_rate)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 perc_dist(smoking_data, smoke, pulse_rate) %>%
   head()
 

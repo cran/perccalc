@@ -3,7 +3,12 @@ df <-
   data.frame(
     continuous = rnorm(100) + 1:100,
     categorical = factor(rep(letters[1:5], each = 20), ordered = TRUE),
-    wt = rnorm(100, mean = 5)
+    wt = rnorm(100, mean = 5),
+    # This is a test in it self. Checking that everything is computed
+    # correctly with additional columns
+    random_col1 = 1,
+    random_col2 = 2,
+    random_col3 = 3
   )
 
 test_that("perc_diff returns the correct output", {
@@ -19,7 +24,7 @@ test_that("perc_diff returns the correct output", {
 })
 
 
-test_that("perc_calc returns the correct output", {
+test_that("perc_dist returns the correct output", {
 
   # Expect it's a data frame
   expect_is(perc_dist(df, categorical, continuous), "data.frame")
@@ -36,7 +41,6 @@ test_that("perc_calc returns the correct output", {
             "numeric")
 })
 
-
 smoking_data <- subset(MASS::survey, select = c("Sex", "Smoke", "Pulse"))
 
 # If factor is not ordered, expect error
@@ -52,32 +56,36 @@ smoking_data$Smoke <-
 test_that("When too few categories in df, correct output", {
 
   # Throws a warnings
-  expect_warning(perc_diff(smoking_data, Smoke, Pulse))
+  warn_result <- expect_warning(perc_diff(smoking_data, Smoke, Pulse),
+                                regexp = "Too few categories in categorical variable to estimate the variance-covariance matrix and standard errors. Proceeding without estimated standard errors but perhaps you should increase the number of categories", #nolintr
+                                fixed = TRUE)
 
   # Output is numeric
-  expect_is(perc_diff(smoking_data, Smoke, Pulse), "numeric")
+  expect_is(warn_result, "numeric")
 
   # is length 1
-  expect_length(perc_diff(smoking_data, Smoke, Pulse), 2)
+  expect_length(warn_result, 2)
 
   # and returns a named vector
-  expect_named(perc_diff(smoking_data, Smoke, Pulse))
+  expect_named(warn_result)
 })
-
 
 test_that("perc_diff calculates value according to Reardon", {
   library(carData)
-  library(dplyr)
 
   set.seed(213141)
   data("GSSvocab")
 
-  gss <-
-    GSSvocab %>%
-    filter(year == '1978') %>%
-    mutate(ageGroup = factor(ageGroup, ordered = TRUE),
-           weight = sample(1:3, size = nrow(.), replace = TRUE, prob = c(0.1, 0.5, 0.4))) %>%
-    select(ageGroup, vocab, weight)
+  gss <- GSSvocab
+  gss$ageGroup <- factor(gss$ageGroup, ordered = TRUE)
+  gss$weight <- sample(1:3,
+                       size = nrow(gss),
+                       replace = TRUE,
+                       prob = c(0.1, 0.5, 0.4))
+
+  gss <- subset(gss,
+                year == "1978",
+                select = c("ageGroup", "vocab", "weight"))
 
   result <- unname(round(perc_diff(gss, ageGroup, vocab, weight), 4))
 
